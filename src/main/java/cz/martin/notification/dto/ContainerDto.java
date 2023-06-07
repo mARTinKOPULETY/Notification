@@ -12,6 +12,6 @@ public class ContainerDto {
 
     private Long containerId;
     private String containerDate;
-    private String containerUntil;
+    private String containerFrom;
     private String containerTo;
 }
