@@ -1,9 +1,9 @@
 package cz.martin.notification.entity;
 
-
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,17 +11,25 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="container")
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Container {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="container_id")
     private Long containerId;
-    @NotBlank
-    private String containerDate;
-    @NotBlank
-    private String containerUntil;
-    @NotBlank
-    private String containerTo;
 
+    @NotBlank
+    @Column(name="container_date")
+    private String containerDate;
+
+    @NotBlank
+    @Column(name="container_from")
+    private String containerFrom;
+
+    @NotBlank
+    @Column(name="container_to")
+    private String containerTo;
 
 }
