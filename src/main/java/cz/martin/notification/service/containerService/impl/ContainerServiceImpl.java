@@ -4,10 +4,14 @@ import cz.martin.notification.dto.ContainerDto;
 import cz.martin.notification.email.service.EmailSenderService;
 import cz.martin.notification.entity.Container;
 import cz.martin.notification.repository.ContainerRepository;
-import cz.martin.notification.email.service.impl.EmailSenderServiceImpl;
 import cz.martin.notification.service.containerService.ContainerService;
+import cz.martin.notification.utils.HibernateUtils;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class ContainerServiceImpl implements ContainerService {
+
+    SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
 
     private final Logger logger = Logger.getLogger(ContainerServiceImpl.class.getName());
     private ContainerRepository containerRepository;
@@ -41,10 +47,31 @@ public class ContainerServiceImpl implements ContainerService {
         if (!newContainers.isEmpty()) {
             logger.info("I'm sending the email, and I'm saving new event into the database.");
             emailSenderService.sendEmail();
-            return   containerRepository.saveAll(containersFromHTML);
+
+            hibernateTransaction(newContainers);
+            return  newContainers ;
         } else {
-            logger.info("There in nothing new to notice.");
+            logger.info("There is nothing new to notice.");
             return null;
+        }
+    }
+
+    private void hibernateTransaction(List<Container> newContainers) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+
+            newContainers.stream().forEach(container-> session.merge(container));
+            session.getTransaction().commit();
+            logger.info("The transaction was successful.");
+
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
         }
     }
 
@@ -57,7 +84,7 @@ public class ContainerServiceImpl implements ContainerService {
                                 && dbCont.getContainerFrom().equals(htmlCont.getContainerFrom())
                                 && dbCont.getContainerTo().equals(htmlCont.getContainerTo())))
                 .toList();
-        logger.info("I have just verified if there is new event on scanning web page.");
+        logger.info("I have just verified if there is new event on monitored site.");
         return newContainers;
     }
 }
