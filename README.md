@@ -18,6 +18,9 @@ Site of local authority was updated with dates till the end of year during final
 ## Used Technology:
     Java, Spring Boot, Maven, JPA, MySQL, Hibernate, Lombok, Jakarta Validation, ModelMapper, Jsoup, Email
 ***
+## TODO:
+Update README.md with Hibernate
+***
 ## App Structure
 <pre>
     main
