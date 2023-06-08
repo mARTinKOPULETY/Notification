@@ -12,7 +12,7 @@ The application regularly parses the website of Prague 3. Finds needed text in H
 ## Version:
 This is the version V1. It doesn't allow to be used aby another user . It doesn't have any controller to create another user who wants to receive notifications by email too. This functionality will come with V2.
 ***
-##Author notice: 
+## Author notice: 
 Site of local authority was updated with dates till the end of year during final functionality verification of app. So  this very useful app is  now very totally unuseful :D. So I will  deploy this application when next spring approaches. When their site will not be  updated:).
 ***
 ## Used Technology:
@@ -65,7 +65,7 @@ Contains one method that send email.
     void sendEmail() throws MessagingException;
 </pre>
 ***
-###EmailSenderServiceImpl - Class that implements the EmailSenderService Interface
+### EmailSenderServiceImpl - Class that implements the EmailSenderService Interface
 
 It uses JavaMailSender library . EmailMessage object is used to set up template of email (email address, subject, body of message). MimeMessage object is used for a html form of a body of an email.  Object MimeMessageHelper is  helper of MimeMessage where is noticed html format (multipart: true). Parameters as an email address  (setTo() ), subject (setSubject() ) and body of email(setText() ) are sets by helper. There is String of html for set up message.
 <pre>
@@ -87,7 +87,7 @@ It uses JavaMailSender library . EmailMessage object is used to set up template 
 
     }</pre>
 ***
-###EmailMessage - Template class
+### EmailMessage - Template class
 This class serves as a template for  email creating. There  is hard coded  link, to (email address "TO_EMAIL" is Environmental Variable!),  subject and message.
 <pre>
     public static final String TO_EMAIL = System.getenv("TO_EMAIL");
@@ -98,7 +98,7 @@ This class serves as a template for  email creating. There  is hard coded  link,
     private String message= "&lt;h3&gt Byly vypsány nové termíny pro svoz kontejnerů na rostlinný a velkoobjemový odpad. Klikni na link: &lt;/h3&gt";
 </pre>
 ***
-###Container - Entity class
+### Container - Entity class
 This is a persistent class for persisting objects to database.  @NotBlank annotations are used for input validation.
 <pre>
     @Id
@@ -118,10 +118,10 @@ This is a persistent class for persisting objects to database.  @NotBlank annota
     @Column(name="container_to")
     private String containerTo;</pre>
 ***
-###ContainerRepository 
+### ContainerRepository 
 Repository is extended by  JpaRepository to take care of work with database.
 ***
-###ContainerService - Interface
+### ContainerService - Interface
 Contains one method that save container object.
 <pre>
 List&lt;Container&gt saveContainers(List&lt;ContainerDto&gt containerDto) throws MessagingException;
@@ -165,8 +165,12 @@ private List&lt;Container> verifyIfThereIsNewContainer(List&lt;Container> contai
     }
 </pre>
 ***
-###HtmlReaderService - Interface
+### HtmlReaderService - Interface
 Contains method that get and return list of containerDto.
+```
+   List<ContainerDto> getListFromHtml();
+```
+
 ***
 ### HtmlReaderServiceImpl - Class implements HtmlReaderService Interface
 This service uses Jsoup for reading HTML tags from URL. There is only one method. It selects all rows that contains needed crossroad ("Pod Vrcholem × Na Balkáně"). Then map  cells of row to needed attributes of container object. Then  calls containerService to save result. For error cases there are two exceptions:
@@ -216,7 +220,7 @@ HTML SOURCE:
         <td class="xl17" style="width:32pt" width="42">16:00</td> 
     </tr>
 ```
-###NotificationApplication - Main Class
+### NotificationApplication - Main Class
 There is only one static method that run Spring Boot application.
 ```
 	public static void main(String[] args) {
