@@ -12,7 +12,7 @@ The application regularly parses the website of Prague 3. Finds needed text in H
 ## Version:
 This is the version V1. It doesn't allow to be used aby another user . It doesn't have any controller to create another user who wants to receive notifications by email too. This functionality will come with V2.
 ***
-##Author notice: 
+## Author notice: 
 Site of local authority was updated with dates till the end of year during final functionality verification of app. So  this very useful app is  now very totally unuseful :D. So I will  deploy this application when next spring approaches. When their site will not be  updated:).
 ***
 ## Used Technology:
